@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://radiantcollectivecapital.vercel.app/sitemap.xml

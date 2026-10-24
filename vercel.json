@@ -1,0 +1,13 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/apply", "destination": "/membership#apply", "permanent": false },
+    { "source": "/login-2", "destination": "/login", "permanent": false },
+    { "source": "/events-2", "destination": "/events", "permanent": false },
+    { "source": "/about-us", "destination": "/about", "permanent": false }
+  ],
+  "headers": [
+    { "source": "/assets/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }] }
+  ]
+}
