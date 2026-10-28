@@ -31,10 +31,10 @@ def header_home():
 def header_inner():
     return ('<header class="hd"><button class="mbox" data-menu aria-expanded="false" aria-controls="sheet" aria-label="Open menu"><span>Menu</span><span>＋</span><span>Index</span><span>01—09</span></button>'
             '<a class="mbrand" href="index.html" aria-label="%s, home"><img src="assets/img/logo-ink.png" alt="%s" width="190" height="50"></a>'
-            '<div class="hlinks"><a href="about.html">About Us</a><a class="keep" href="membership.html#apply">Apply</a><a href="login.html">Login</a></div></header>' % (SITE, SITE))
+            '<div class="hlinks"><a href="about.html">About Us</a><a class="keep" href="membership.html#apply">Apply</a><a href="login.html" data-auth="link">Login</a></div></header>' % (SITE, SITE))
 
 def menu():
-    links = ''.join('<a href="%s"><span style="--i:%d">%s</span></a>' % (h, i, t) for i, (t, h) in enumerate(NAV))
+    links = ''.join('<a href="%s"%s><span style="--i:%d">%s</span></a>' % (h, ' data-auth="link"' if t == 'Login' else '', i, t) for i, (t, h) in enumerate(NAV))
     return ('<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">'
             '<div class="tp"><img src="assets/img/logo-cream.png" alt="%s" width="190" height="50"><button class="x" id="sheet-close">Close <i>✕</i></button></div>'
             '<nav aria-label="Main">%s</nav>'
@@ -47,7 +47,7 @@ def footer():
       <p>Keep up with us. By subscribing, you agree to our <a href="privacy.html" style="text-decoration:underline">Privacy Policy</a> and consent to updates.</p>
       <div><form data-form="newsletter" novalidate><label class="sr" for="nl-email">Email address</label><input id="nl-email" name="email" type="email" required placeholder="Your email here" autocomplete="email"><button type="submit">Subscribe →</button></form>
       <div class="fmsg ok" role="status">Thank you! Your submission has been received!</div><div class="fmsg err" role="alert">Oops! Something went wrong while submitting the form.</div></div></div>
-    <div><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="membership.html">Membership Info</a></li><li><a href="events.html">Upcoming Events</a></li><li><a href="login.html">Login</a></li><li><a href="%(mail)s">Contact Support</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="membership.html">Membership Info</a></li><li><a href="events.html">Upcoming Events</a></li><li><a href="login.html" data-auth="link">Login</a></li><li><a href="%(mail)s">Contact Support</a></li></ul></div>
     <div><h4>Member Portal</h4><ul><li><a href="portal.html">Member Portal</a></li><li><a href="investments.html">Investment Opportunities</a></li><li><a href="academy.html">Academy</a></li></ul></div>
     <div><h4>Follow Us</h4><ul><li><a href="%(ig)s" target="_blank" rel="noopener">Instagram</a></li><li><a href="%(li)s" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
   </div>
@@ -63,6 +63,7 @@ LAYOUT = '''<!doctype html>
 <title>%(title)s</title>
 <meta name="description" content="%(desc)s">
 <meta name="theme-color" content="#f1ebdd">
+%(robots)s
 <meta property="og:type" content="website"><meta property="og:site_name" content="Radiant Collective Capital">
 <meta property="og:title" content="%(title)s"><meta property="og:description" content="%(desc)s"><meta property="og:image" content="assets/img/p1.jpg">
 <link rel="icon" href="assets/img/logo-mark.png">
@@ -80,7 +81,8 @@ LAYOUT = '''<!doctype html>
 %(body)s
 </main>
 %(footer)s
-<script src="assets/js/site.js" defer></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/site.js" defer></script>%(extra)s
 </body>
 </html>
 '''
@@ -102,10 +104,12 @@ def main():
         html = LAYOUT % dict(title=title, desc=meta['desc'], cls=meta.get('cls', 'inner'),
                              preload='Iurb6YFw84WUY4NJiBak.woff2',
                              intro=intro() if home else '', header=header_home() if home else header_inner(),
-                             menu=menu(), body=body, footer=footer())
+                             menu=menu(), body=body, footer=footer(),
+                             robots='<meta name="robots" content="noindex">' if meta.get('robots') == 'noindex' else '',
+                             extra=('\n<script src="assets/js/%s" defer></script>' % meta['script']) if meta.get('script') else '')
         open(os.path.join(ROOT, fn), 'w', encoding='utf-8').write(html)
         built.append(fn)
-    pages = [f for f in built if f not in ('404.html',)]
+    pages = [f for f in built if f not in ('404.html', 'portal.html', 'login.html')]
     base = 'https://radiantcollectivecapital.vercel.app/'
     sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for f in pages: sm.append('<url><loc>%s%s</loc></url>' % (base, '' if f == 'index.html' else f[:-5]))

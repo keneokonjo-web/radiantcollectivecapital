@@ -102,6 +102,12 @@
       [ok, err].forEach(function (m) { if (m) m.classList.remove('show'); });
       if (!form.checkValidity()) { form.reportValidity(); return; }
       var kind = form.getAttribute('data-form');
+      if (kind === 'login') {
+        var fd0 = new FormData(form);
+        if (window.RCCAuth && RCCAuth.login(fd0.get('email'), fd0.get('password'), !!fd0.get('remember'))) { location.href = 'portal.html'; return; }
+        if (err) { err.textContent = 'That email or password isn’t right. For the preview, use the demo details shown on this page.'; err.classList.add('show'); }
+        return;
+      }
       if (!FORM_ENDPOINT) {
         if (err) { err.innerHTML = 'This form isn’t connected yet, so nothing was sent. ' + (kind === 'apply' ? 'Please apply on <a href="' + LIVE_APPLY + '">rcc.africa/membership</a> for now.' : kind === 'login' ? 'Member login is being connected.' : 'Please email <a href="mailto:admin@radiantcollective.capital">admin@radiantcollective.capital</a> for now.'); err.classList.add('show'); }
         return;

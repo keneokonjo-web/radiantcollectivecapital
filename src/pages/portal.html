@@ -1,6 +1,10 @@
 title: Member Portal
 desc: The Radiant member portal: your feed, investment opportunities, events and recordings, and the Academy. Members log in to continue.
+robots: noindex
+script: portal.js
+
 ---
+<div id="gate">
 <section class="page-head">
   <span class="kicker" data-r>Member Portal</span>
   <h1 data-r>Welcome <em>home.</em></h1>
@@ -16,3 +20,59 @@ desc: The Radiant member portal: your feed, investment opportunities, events and
     <div class="gate" data-r style="--d:.24"><span class="lock">Members</span><div><h3>Academy</h3><p>Access our private learning library.</p></div><a class="btn" href="login.html">Log in <span>→</span></a></div>
   </div>
 </section>
+</div>
+<div id="app" hidden>
+<section class="app-top">
+  <div class="demo-bar" role="note"><b>Preview portal</b> — sample content only, not real member data or offerings.</div>
+  <span class="kicker">Member Portal</span>
+  <h1 id="greet">Welcome back.</h1>
+</section>
+<div class="pattern" aria-hidden="true"></div>
+<div class="app">
+  <aside class="side" aria-label="Portal sections">
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="feed" aria-selected="true"><b>01</b>Your feed</button>
+      <button role="tab" data-tab="opportunities"><b>02</b>Investment Opportunities</button>
+      <button role="tab" data-tab="events"><b>03</b>Events &amp; Recordings</button>
+      <button role="tab" data-tab="academy"><b>04</b>Academy</button>
+      <button role="tab" data-tab="profile"><b>05</b>Profile</button>
+    </nav>
+    <div class="usercard"><img id="avatar" alt="" width="56" height="56" hidden><span class="ini" id="ini">D</span><div><strong id="uname">Demo Member</strong><span class="sm" id="uemail"></span></div></div>
+    <button class="btn" id="signout" type="button">Sign out <span>→</span></button>
+  </aside>
+  <div class="panels">
+    <section class="panel" id="p-feed" data-panel="feed" aria-labelledby="t-feed">
+      <h2 class="h2" id="t-feed">Your feed</h2><p class="sm">Access the latest updates.</p>
+      <div class="stats" id="stats"></div>
+      <div class="posts" id="posts"></div>
+    </section>
+    <section class="panel" id="p-opportunities" data-panel="opportunities" hidden aria-labelledby="t-opp">
+      <h2 class="h2" id="t-opp">Investment Opportunities</h2><p class="sm">Explore our investment opportunities and insights.</p>
+      <div class="note-box" style="margin:1.4rem 0"><p style="margin:0"><b>Sample opportunities.</b> These three cards show how opportunities will appear to members. They are illustrations, not real offerings. Investing involves risk, including loss of capital.</p></div>
+      <div class="deals" id="deals"></div>
+    </section>
+    <section class="panel" id="p-events" data-panel="events" hidden aria-labelledby="t-ev">
+      <h2 class="h2" id="t-ev">Events &amp; Recordings</h2><p class="sm">Join exclusive events or watch replays.</p>
+      <div class="filters" id="evfilters" role="group" aria-label="Filter by type"></div>
+      <div class="events" id="events"></div>
+    </section>
+    <section class="panel" id="p-academy" data-panel="academy" hidden aria-labelledby="t-ac">
+      <h2 class="h2" id="t-ac">Academy</h2><p class="sm">Access our private learning library. Tick lessons off as you go; your progress is saved in this browser.</p>
+      <div class="courses" id="courses"></div>
+    </section>
+    <section class="panel" id="p-profile" data-panel="profile" hidden aria-labelledby="t-pr">
+      <h2 class="h2" id="t-pr">Profile</h2>
+      <div class="profile">
+        <div class="pic"><div class="ph" id="pic"><span id="pic-ini">D</span></div><label class="btn" for="pic-file">Upload New</label><input class="sr" type="file" id="pic-file" accept="image/*"><p class="sm">Preview only: your picture stays in this browser.</p></div>
+        <form class="f" id="pform" novalidate>
+          <div class="row2"><div class="fld"><label for="pf-name">Name</label><input id="pf-name" type="text" autocomplete="name"></div><div class="fld"><label for="pf-email">Email</label><input id="pf-email" type="email" readonly></div></div>
+          <div class="row2"><div class="fld"><label for="pf-country">Country of Residence</label><input id="pf-country" type="text"></div><div class="fld"><label for="pf-ind">Industry</label><input id="pf-ind" type="text"></div></div>
+          <div class="fld"><label for="pf-li">LinkedIn Profile</label><input id="pf-li" type="url" placeholder="https://"></div>
+          <dl class="facts" style="margin:0"><div><dt>Membership</dt><dd>Founding member (preview)</dd></div><div><dt>Annual fee</dt><dd>$500 founding rate</dd></div></dl>
+          <div><button class="pbtn" type="submit">Save changes</button> <span class="sm" id="saved" hidden>Saved in this browser.</span></div>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>
+</div>
