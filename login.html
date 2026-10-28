@@ -29,7 +29,7 @@
   <div class="preview-box" data-r><b>Preview access</b><p>This is a preview of the member portal with sample content. Use the demo account:</p><dl><div><dt>Email</dt><dd id="demo-email"></dd></div><div><dt>Password</dt><dd id="demo-pass"></dd></div></dl><button type="button" class="btn" id="demo-fill">Fill in the demo details <span>→</span></button></div>
   <div class="or" data-r>or</div>
   <div data-r>
-    <form class="f" data-form="login" novalidate>
+    <form class="f" id="login-form" novalidate>
       <div class="fld"><label for="l-email">Email</label><input id="l-email" name="email" type="email" required autocomplete="email"></div>
       <div class="fld"><label for="l-pass">Password</label><input id="l-pass" name="password" type="password" required autocomplete="current-password"></div>
       <div class="rowb"><label class="opt"><input type="checkbox" name="remember"> Keep me logged in</label><a href="contact.html" style="text-decoration:underline">Forgot Password</a></div>
@@ -39,7 +39,7 @@
   </div>
   <p data-r style="margin-top:1.6rem">If you don’t have an account yet, click here to <a href="membership.html#apply" style="color:var(--clay);text-decoration:underline">sign up</a>!</p>
 </section>
-<script>document.addEventListener('DOMContentLoaded',function(){var b=document.getElementById('li-btn'),n=document.getElementById('li-note');if(b)b.addEventListener('click',function(){n.classList.add('show')});if(window.RCCAuth){if(RCCAuth.user()){location.replace('portal.html');return}document.getElementById('demo-email').textContent=RCCAuth.demo.email;document.getElementById('demo-pass').textContent=RCCAuth.demo.password;document.getElementById('demo-fill').addEventListener('click',function(){document.getElementById('l-email').value=RCCAuth.demo.email;document.getElementById('l-pass').value=RCCAuth.demo.password;document.getElementById('l-pass').focus()})}})</script>
+<script>document.addEventListener('DOMContentLoaded',function(){var b=document.getElementById('li-btn'),n=document.getElementById('li-note');if(b)b.addEventListener('click',function(){n.classList.add('show')});if(window.RCCAuth){if(RCCAuth.user()){location.replace('portal.html');return}document.getElementById('demo-email').textContent=RCCAuth.demo.email;document.getElementById('demo-pass').textContent=RCCAuth.demo.password;var f=document.getElementById('login-form'),em=document.querySelector('#login-form').parentNode.querySelector('.fmsg.err');f.addEventListener('submit',function(e){e.preventDefault();em.classList.remove('show');if(!f.checkValidity()){f.reportValidity();return}if(window.RCCAuth&&RCCAuth.login(f.email.value,f.password.value,f.remember.checked)){location.href='portal.html'}else{em.textContent='That email or password isn’t right. For the preview, use the demo details shown on this page.';em.classList.add('show')}});document.getElementById('demo-fill').addEventListener('click',function(){document.getElementById('l-email').value=RCCAuth.demo.email;document.getElementById('l-pass').value=RCCAuth.demo.password;document.getElementById('l-pass').focus()})}})</script>
 </main>
 <footer>
   <div class="top">
