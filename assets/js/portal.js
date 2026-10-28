@@ -19,75 +19,91 @@
     $$('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== tab; });
     $$('[data-tab]').forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-tab') === tab); });
   }
-  $$('[data-tab]').forEach(function (b) { b.addEventListener('click', function () { var t = b.getAttribute('data-tab'); history.replaceState(null, '', '#' + t); show(t); var top = $('.app').getBoundingClientRect().top + scrollY - 90; if (scrollY > top) scrollTo({ top: top, behavior: 'smooth' }); }); });
+  function go(t) { history.replaceState(null, '', '#' + t); show(t); var top = $('.app').getBoundingClientRect().top + scrollY - 90; if (scrollY > top) scrollTo({ top: top, behavior: 'smooth' }); }
+  $$('[data-tab]').forEach(function (b) { b.addEventListener('click', function () { go(b.getAttribute('data-tab')); }); });
   show(location.hash.slice(1));
   addEventListener('hashchange', function () { show(location.hash.slice(1)); });
 
-  /* feed (sample content) */
-  $('#stats').innerHTML = [['Membership', 'Founding member'], ['Open opportunities', '3 (sample)'], ['Academy lessons done', '<span id="done-n">0</span>']].map(function (s) { return '<div><span class="sm">' + s[0] + '</span><strong>' + s[1] + '</strong></div>'; }).join('');
+  /* ---------- sample data (replace with real data when the portal is connected) ---------- */
+  var STATUS = { open: 'Now open', closing: 'Closing soon', closed: 'Window closed' };
+  var pipeline = [
+    { t: 'Residential development', sector: 'Real estate', st: 'closed', vis: 'public', w: 'Investment window shut' },
+    { t: 'Payments platform', sector: 'Fintech', st: 'closing', vis: 'public', w: 'Final days to commit' },
+    { t: 'Boutique hotel', sector: 'Hospitality', st: 'open', vis: 'public', w: 'Open to commitments' },
+    { t: 'Banking opportunity', sector: 'Banking', st: 'open', vis: 'private', w: 'Open to commitments' },
+    { t: 'Commercial property', sector: 'Real estate', st: 'open', vis: 'private', w: 'Open to commitments' },
+    { t: 'AI-enabled services company', sector: 'AI', st: 'open', vis: 'private', w: 'Open to commitments' },
+    { t: 'Mixed-use development', sector: 'Real estate', st: 'open', vis: 'private', w: 'Open to commitments' }
+  ];
+  var members = [['Lagos', 'Nigeria'], ['Abuja', 'Nigeria'], ['Accra', 'Ghana'], ['Nairobi', 'Kenya'], ['Kigali', 'Rwanda'], ['Johannesburg', 'South Africa'], ['Cape Town', 'South Africa'], ['Dakar', 'Senegal'], ['Addis Ababa', 'Ethiopia'], ['London', 'United Kingdom'], ['Houston', 'United States'], ['Toronto', 'Canada'], ['Dubai', 'United Arab Emirates'], ['Paris', 'France']];
+  var reports = [8, 7, 6, 5, 4, 3, 2, 1];
+  var lounges = [['Upcoming', 'Quarterly investment lounge', 'Date to be announced', 'Add to calendar'], ['Past', 'Previous investment lounge', 'Recording available to members', 'Watch recording'], ['Past', 'Earlier investment lounge', 'Recording available to members', 'Watch recording']];
+
+  /* ---------- feed ---------- */
+  $('#stats').innerHTML = [['Pipeline', pipeline.length + ' opportunities (sample)'], ['Latest market report', 'This week (sample)'], ['Members in the network', (members.length + 1) + ' (sample)']].map(function (s) { return '<div><span class="sm">' + s[0] + '</span><strong>' + s[1] + '</strong></div>'; }).join('');
   var posts = [
-    ['Welcome', 'Welcome to your member portal', 'This is a preview of the Radiant member portal. Your feed will show the latest updates from the Radiant team here.'],
-    ['Opportunities', 'New opportunity briefings', 'When an opportunity is ready, its briefing and documentation appear under Investment Opportunities, so you can review it and decide.'],
-    ['Events', 'Salons and masterclasses', 'Invitations to investor salons and masterclasses, and replays of past sessions, live under Events & Recordings.'],
-    ['Academy', 'Learn at your own pace', 'Bite-sized courses, tools and resources are added to the Academy library.']
+    ['Market report', 'This week’s RCC market report is in', 'A five-minute read from our CIO: what’s moving across Pan-African markets and what to pay attention to. Also in your inbox.', 'reports'],
+    ['Opportunities', 'An opportunity is closing soon', 'The investment window is about to shut on one opportunity. Review the briefing and decide.', 'opportunities'],
+    ['Opportunities', 'New opportunities are open', 'New opportunities have opened, including some that are for members only.', 'opportunities'],
+    ['Lounges', 'Your next quarterly investment lounge', 'Lounges are educational, and are also where opportunities are reviewed.', 'lounges']
   ];
-  $('#posts').innerHTML = posts.map(function (p, i) { return '<article class="post"><span class="tag">' + p[0] + '</span><span class="sample">Sample</span><h3>' + esc(p[1]) + '</h3><p>' + esc(p[2]) + '</p></article>'; }).join('');
+  $('#posts').innerHTML = posts.map(function (p) { return '<article class="post"><span class="tag">' + p[0] + '</span><span class="sample">Sample</span><h3>' + esc(p[1]) + '</h3><p>' + esc(p[2]) + '</p><a class="btn" href="#' + p[3] + '" data-go="' + p[3] + '" style="margin-top:.6rem">Open <span>→</span></a></article>'; }).join('');
+  $('#posts').addEventListener('click', function (e) { var a = e.target.closest('[data-go]'); if (!a) return; e.preventDefault(); go(a.getAttribute('data-go')); });
 
-  /* opportunities (sample) */
-  var deals = [
-    ['A', 'Residential development', 'Real estate', 'Open to commitments'],
-    ['B', 'Payments platform', 'Fintech', 'Opening soon'],
-    ['C', 'Boutique hotel', 'Hospitality', 'Closed']
-  ];
-  $('#deals').innerHTML = deals.map(function (d) {
-    return '<article class="deal"><span class="sample">Sample</span><span class="num">' + d[0] + '</span><h3>' + d[1] + '</h3><dl><div><dt>Sector</dt><dd>' + d[2] + '</dd></div><div><dt>Structure</dt><dd>Special Purpose Vehicle (SPV)</dd></div><div><dt>Minimum</dt><dd>$10,000</dd></div><div><dt>Horizon</dt><dd>3–5 years, illiquid</dd></div><div><dt>Status</dt><dd>' + d[3] + '</dd></div></dl>'
-      + '<details><summary>Documentation</summary><ul><li>Opportunity briefing</li><li>Shareholder agreement</li><li>Financial overview</li></ul><p class="sm">In the live portal, members receive full documentation for each opportunity and decide deal by deal.</p></details></article>';
-  }).join('');
-
-  /* events (sample) */
-  var types = ['All', 'Workshop', 'Webinar', 'Networking Event', 'Guest Speaker', 'Replay'];
-  var evs = [
-    ['Webinar', 'Upcoming', 'Investing foundations for busy women', 'Date to be announced'],
-    ['Networking Event', 'Upcoming', 'Investor salon', 'Date to be announced'],
-    ['Workshop', 'Upcoming', 'Reading a deal, step by step', 'Date to be announced'],
-    ['Guest Speaker', 'Upcoming', 'Conversation with a guest investor', 'Date to be announced'],
-    ['Replay', 'Recording', 'Masterclass: understanding SPVs', 'Replay available to members'],
-    ['Replay', 'Recording', 'Investor salon highlights', 'Replay available to members']
-  ];
-  $('#evfilters').innerHTML = types.map(function (t, i) { return '<button type="button" class="chip" aria-pressed="' + (i === 0) + '" data-f="' + t + '">' + t + '</button>'; }).join('');
-  function drawEvents(f) {
-    $('#events').innerHTML = evs.filter(function (e) { return f === 'All' || e[0] === f; }).map(function (e) { return '<article class="ev"><span class="sample">Sample</span><span class="tag">' + e[0] + '</span><h3>' + e[2] + '</h3><p class="sm">' + e[3] + '</p>' + (e[1] === 'Recording' ? '<span class="btn">Watch replay <span>→</span></span>' : '<span class="btn">Add to calendar <span>→</span></span>') + '</article>'; }).join('') || '<p class="sm">Nothing in this category yet.</p>';
+  /* ---------- opportunities ---------- */
+  var oppF = [['all', 'All'], ['open', 'Now open'], ['closing', 'Closing soon'], ['closed', 'Window closed'], ['private', 'Members only'], ['public', 'Public']];
+  $('#oppfilters').innerHTML = oppF.map(function (f, i) { return '<button type="button" class="chip" aria-pressed="' + (i === 0) + '" data-f="' + f[0] + '">' + f[1] + '</button>'; }).join('');
+  function drawDeals(f) {
+    var list = pipeline.map(function (d, i) { d.n = i + 1; return d; }).filter(function (d) { return f === 'all' || d.st === f || d.vis === f; });
+    $('#deals').innerHTML = list.map(function (d) {
+      return '<article class="deal' + (d.st === 'closed' ? ' is-closed' : '') + '"><span class="sample">Sample</span><div class="badges"><span class="status ' + d.st + '">' + STATUS[d.st] + '</span><span class="status ' + (d.vis === 'private' ? 'priv' : 'pub') + '">' + (d.vis === 'private' ? 'Members only' : 'Public') + '</span></div>'
+        + '<span class="num">' + String(d.n).padStart(2, '0') + '</span><h3>' + d.t + '</h3><dl><div><dt>Sector</dt><dd>' + d.sector + '</dd></div><div><dt>Structure</dt><dd>Special Purpose Vehicle (SPV)</dd></div><div><dt>Minimum</dt><dd>$10,000</dd></div><div><dt>Horizon</dt><dd>3–5 years, illiquid</dd></div><div><dt>Window</dt><dd>' + d.w + '</dd></div></dl>'
+        + '<details><summary>Documentation</summary><ul><li>Opportunity briefing</li><li>Shareholder agreement</li><li>' + (d.st === 'closed' ? 'Updates and reports' : 'Financial overview') + '</li></ul><p class="sm">In the live portal, members receive full documentation for each opportunity and decide deal by deal.</p></details></article>';
+    }).join('') || '<p class="sm">Nothing matches that filter.</p>';
   }
-  drawEvents('All');
-  $('#evfilters').addEventListener('click', function (e) { var b = e.target.closest('[data-f]'); if (!b) return; $$('#evfilters .chip').forEach(function (c) { c.setAttribute('aria-pressed', c === b); }); drawEvents(b.getAttribute('data-f')); });
+  drawDeals('all');
+  $('#oppfilters').addEventListener('click', function (e) { var b = e.target.closest('[data-f]'); if (!b) return; $$('#oppfilters .chip').forEach(function (c) { c.setAttribute('aria-pressed', c === b); }); drawDeals(b.getAttribute('data-f')); });
 
-  /* academy: lessons with saved progress */
-  var courses = [
-    ['Investing foundations', ['What investing is, and isn’t', 'Risk and return', 'Building a simple plan', 'Common mistakes', 'Your first steps']],
-    ['How to read a deal', ['The opportunity briefing', 'Questions to ask', 'Understanding the numbers', 'Making your decision']],
-    ['Understanding SPVs', ['What an SPV is', 'Governance and documents', 'How returns are distributed']],
-    ['Managing risk', ['Illiquidity and time horizons', 'Diversifying across deals', 'Due diligence checklist', 'Staying the course']]
-  ];
-  var prog = store('progress') || {};
-  function draw() {
-    var total = 0;
-    $('#courses').innerHTML = courses.map(function (c, ci) {
-      var done = c[1].filter(function (l, li) { return prog[ci + '-' + li]; }).length; total += done;
-      return '<article class="course"><span class="sample">Sample</span><h3>' + c[0] + '</h3><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + c[1].length + '" aria-valuenow="' + done + '" aria-label="' + c[0] + ' progress"><i style="width:' + Math.round(done / c[1].length * 100) + '%"></i></div><p class="sm">' + done + ' of ' + c[1].length + ' lessons</p><ul>' + c[1].map(function (l, li) { var k = ci + '-' + li; return '<li><label class="opt"><input type="checkbox" data-k="' + k + '"' + (prog[k] ? ' checked' : '') + '> ' + l + '</label></li>'; }).join('') + '</ul></article>';
-    }).join('');
-    var n = $('#done-n'); if (n) n.textContent = total;
+  /* ---------- profile (also feeds the directory) ---------- */
+  var prof = Object.assign({ name: user.name, city: 'Lagos', country: 'Nigeria', industry: '', linkedin: '' }, store('profile') || {});
+  var picData = store('pic');
+  function initial(n) { return (n || 'D').trim().charAt(0).toUpperCase(); }
+  function who() { $('#uname').textContent = prof.name; $('#ini').textContent = initial(prof.name); $('#pic-ini').textContent = initial(prof.name); }
+  $('#pf-name').value = prof.name; $('#pf-email').value = user.email; $('#pf-city').value = prof.city; $('#pf-country').value = prof.country; $('#pf-ind').value = prof.industry; $('#pf-li').value = prof.linkedin;
+  who();
+
+  /* ---------- network directory: every member sees every member ---------- */
+  function directory() {
+    var q = ($('#dir-q').value || '').trim().toLowerCase(), c = $('#dir-c').value;
+    var all = [{ name: prof.name, city: prof.city, country: prof.country, you: true }].concat(members.map(function (m, i) { return { name: 'Sample Member ' + String(i + 1).padStart(2, '0'), city: m[0], country: m[1] }; }));
+    var shown = all.filter(function (m) { return (!c || m.country === c) && (!q || (m.name + ' ' + m.city + ' ' + m.country).toLowerCase().indexOf(q) > -1); });
+    $('#dir').innerHTML = shown.map(function (m) {
+      var av = m.you && picData ? '<span class="av" style="background-image:url(' + picData + ')"></span>' : '<span class="av">' + (m.you ? initial(m.name) : m.name.slice(-2)) + '</span>';
+      return '<div class="mem-card">' + av + '<div><strong>' + esc(m.name) + '</strong><span class="loc">' + esc([m.city, m.country].filter(Boolean).join(', ') || 'Location not set') + '</span></div>' + (m.you ? '<span class="you">You</span>' : '') + '</div>';
+    }).join('') || '<p class="sm">No members match.</p>';
+    $('#dir-count').textContent = shown.length + ' of ' + all.length + ' members (sample directory)';
   }
-  draw();
-  $('#courses').addEventListener('change', function (e) { var k = e.target.getAttribute('data-k'); if (!k) return; if (e.target.checked) prog[k] = 1; else delete prog[k]; store('progress', prog); draw(); var again = $('[data-k="' + k + '"]'); if (again) again.focus(); });
+  var countries = Array.from(new Set(members.map(function (m) { return m[1]; }).concat([prof.country]).filter(Boolean))).sort();
+  $('#dir-c').innerHTML = '<option value="">All countries</option>' + countries.map(function (c) { return '<option>' + esc(c) + '</option>'; }).join('');
+  $('#dir-q').addEventListener('input', directory); $('#dir-c').addEventListener('change', directory);
+  directory();
 
-  /* profile */
-  var prof = store('profile') || { name: user.name, country: '', industry: '', linkedin: '' };
-  $('#pf-name').value = prof.name; $('#pf-email').value = user.email; $('#pf-country').value = prof.country; $('#pf-ind').value = prof.industry; $('#pf-li').value = prof.linkedin;
-  function who(n) { $('#uname').textContent = n; $('#ini').textContent = (n || 'D').charAt(0).toUpperCase(); $('#pic-ini').textContent = (n || 'D').charAt(0).toUpperCase(); }
-  who(prof.name);
-  $('#pform').addEventListener('submit', function (e) { e.preventDefault(); prof = { name: $('#pf-name').value.trim() || user.name, country: $('#pf-country').value, industry: $('#pf-ind').value, linkedin: $('#pf-li').value }; store('profile', prof); who(prof.name); var s = $('#saved'); s.hidden = false; setTimeout(function () { s.hidden = true; }, 2500); });
-  function setPic(src) { $('#pic').style.backgroundImage = 'url(' + src + ')'; $('#pic').classList.add('has'); $('#avatar').src = src; $('#avatar').hidden = false; $('#ini').hidden = true; }
-  var pic = store('pic'); if (pic) setPic(pic);
+  /* ---------- market reports (weekly) ---------- */
+  $('#rep-latest').innerHTML = '<span class="sample">Sample</span><span class="tag">Latest · weekly</span><h3>Weekly RCC market report</h3><p>A Pan-African wealth lens on what is happening in the market, what to pay attention to, and how it relates to our investment thesis.</p><span class="btn">Read report · 5 min <span>→</span></span>';
+  $('#reports').innerHTML = reports.map(function (n) { return '<div class="rep"><b>Weekly</b><h4>RCC market report · sample ' + String(n).padStart(2, '0') + '</h4><span class="sm">5-min read</span></div>'; }).join('');
+
+  /* ---------- lounges ---------- */
+  $('#lounges').innerHTML = lounges.map(function (l) { return '<article class="ev"><span class="sample">Sample</span><span class="tag">' + l[0] + '</span><h3>' + l[1] + '</h3><p class="sm">' + l[2] + '</p><span class="btn">' + l[3] + ' <span>→</span></span></article>'; }).join('');
+
+  /* ---------- profile save / picture ---------- */
+  $('#pform').addEventListener('submit', function (e) {
+    e.preventDefault();
+    prof = { name: $('#pf-name').value.trim() || user.name, city: $('#pf-city').value.trim(), country: $('#pf-country').value.trim(), industry: $('#pf-ind').value, linkedin: $('#pf-li').value };
+    store('profile', prof); who(); directory();
+    var s = $('#saved'); s.hidden = false; setTimeout(function () { s.hidden = true; }, 2500);
+  });
+  function setPic(src) { picData = src; $('#pic').style.backgroundImage = 'url(' + src + ')'; $('#pic').classList.add('has'); $('#avatar').src = src; $('#avatar').hidden = false; $('#ini').hidden = true; directory(); }
+  if (picData) setPic(picData);
   $('#pic-file').addEventListener('change', function (e) {
     var f = e.target.files[0]; if (!f || f.type.indexOf('image/') !== 0) return;
     var r = new FileReader(); r.onload = function () { setPic(r.result); try { store('pic', r.result.length < 900000 ? r.result : null); } catch (x) {} }; r.readAsDataURL(f);

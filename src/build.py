@@ -6,14 +6,13 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGES = os.path.join(ROOT, 'src', 'pages')
 SITE = 'Radiant Collective Capital'
 
-NAV = [('Home', 'index.html'), ('About Us', 'about.html'), ('Membership', 'membership.html'),
-       ('Investment Opportunities', 'investments.html'), ('Academy', 'academy.html'),
-       ('Events &amp; Recordings', 'events.html'), ('Member Portal', 'portal.html'),
-       ('Apply', 'membership.html#apply'), ('Login', 'login.html')]
+NAV = [('Home', 'index.html'), ('About Us', 'about.html'), ('Opportunities', 'opportunities.html'),
+       ('Network', 'network.html'), ('Education', 'education.html'), ('Membership', 'membership.html'),
+       ('Member Portal', 'portal.html'), ('Apply', 'membership.html#apply'), ('Login', 'login.html')]
 INSTAGRAM = 'https://www.instagram.com/radiantcollectivecapital/'
 LINKEDIN = 'https://www.linkedin.com/company/radiantcollectivecapital'
 MAIL = 'mailto:admin@radiantcollective.capital'
-STRIP = ['Pan-African investments &amp; community for women leaders', 'Founding members’ rate: $500 a year', 'Real estate · fintech · hospitality · AI', 'Small checks, big impact']
+STRIP = ['Pan-African investments &amp; community for women leaders', 'Founding members’ rate: $500 a year', 'Real estate · fintech · hospitality · AI', 'Small checks, big opportunities']
 
 def intro():
     letters = ''.join('<span style="--i:%d">%s</span>' % (i, c) for i, c in enumerate('Radiant'))
@@ -48,7 +47,7 @@ def footer():
       <div><form data-form="newsletter" novalidate><label class="sr" for="nl-email">Email address</label><input id="nl-email" name="email" type="email" required placeholder="Your email here" autocomplete="email"><button type="submit">Subscribe →</button></form>
       <div class="fmsg ok" role="status">Thank you! Your submission has been received!</div><div class="fmsg err" role="alert">Oops! Something went wrong while submitting the form.</div></div></div>
     <div><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="membership.html">Membership Info</a></li><li><a href="events.html">Upcoming Events</a></li><li><a href="login.html" data-auth="link">Login</a></li><li><a href="%(mail)s">Contact Support</a></li></ul></div>
-    <div><h4>Member Portal</h4><ul><li><a href="portal.html">Member Portal</a></li><li><a href="investments.html">Investment Opportunities</a></li><li><a href="academy.html">Academy</a></li></ul></div>
+    <div><h4>Member Portal</h4><ul><li><a href="portal.html">Member Portal</a></li><li><a href="opportunities.html">Opportunities</a></li><li><a href="network.html">Network</a></li><li><a href="education.html">Education</a></li></ul></div>
     <div><h4>Follow Us</h4><ul><li><a href="%(ig)s" target="_blank" rel="noopener">Instagram</a></li><li><a href="%(li)s" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
   </div>
   <div class="wm" aria-hidden="true">Radiant</div>

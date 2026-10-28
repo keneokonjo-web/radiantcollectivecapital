@@ -5,7 +5,9 @@
     { "source": "/apply", "destination": "/membership#apply", "permanent": false },
     { "source": "/login-2", "destination": "/login", "permanent": false },
     { "source": "/events-2", "destination": "/events", "permanent": false },
-    { "source": "/about-us", "destination": "/about", "permanent": false }
+    { "source": "/about-us", "destination": "/about", "permanent": false },
+    { "source": "/investments", "destination": "/opportunities", "permanent": false },
+    { "source": "/academy", "destination": "/education", "permanent": false }
   ],
   "headers": [
     { "source": "/assets/(js|css)/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },

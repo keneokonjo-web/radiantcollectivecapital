@@ -306,3 +306,35 @@ fieldset{border:0;padding:0;margin:0;display:grid;gap:.6rem}
   .tabs button{flex:none;border:1px solid var(--line);border-radius:99px;padding:.55rem 1rem;font-size:1.05rem}.tabs button b{display:none}.tabs button:hover,.tabs button[aria-selected="true"]{padding-left:1rem}
   .stats{grid-template-columns:1fr}.profile{grid-template-columns:1fr}
 }
+
+/* ---------- status badges and public opportunity models ---------- */
+.status{display:inline-block;margin-bottom:.5rem;padding:.25rem .7rem;border-radius:99px;font:500 .72rem var(--sans);letter-spacing:.08em;text-transform:uppercase;background:var(--dark);color:var(--bg)}
+.status.open{background:var(--olive);color:#fff}.status.closing{background:var(--gold);color:var(--dark)}.status.closed{background:rgba(60,58,48,.18);color:var(--ink)}
+.deal.more{background:var(--dark);color:var(--bg);display:flex;flex-direction:column;justify-content:space-between;gap:1rem;transition:transform .5s var(--ease)}.deal.more:hover{transform:translateY(-6px)}
+.deal.more .num{color:var(--gold)}.deal.more p{margin:0;color:rgba(241,235,221,.8)}.deal.more .btn{color:var(--gold)}
+.deal p.sm{margin:.2rem 0 0}
+
+/* ---------- portal: pipeline, directory, reports, lounges ---------- */
+.deal .badges{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.6rem;padding-right:4.5rem}
+.deal .badges .status{margin:0}.status.priv{background:var(--clay);color:#fff}.status.pub{background:transparent;border:1px solid var(--ink);color:var(--ink)}
+.deal.is-closed{opacity:.78}.deal .num{font-size:2.6rem}
+.dirbar{display:grid;grid-template-columns:1fr 220px;gap:1rem;margin:1.4rem 0 .6rem;max-width:620px}.dirbar input[type=search]{width:100%;background:transparent;border:0;border-bottom:1px solid var(--ink);padding:.7rem 0;font:300 1.1rem var(--serif);border-radius:0}
+.dirbar select{width:100%;background:transparent;border:0;border-bottom:1px solid var(--ink);padding:.7rem 0;font:300 1.1rem var(--serif);border-radius:0}
+.dir{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:1rem}
+.mem-card{display:flex;gap:.9rem;align-items:center;background:var(--paper);border-radius:18px;padding:.9rem 1rem;position:relative}
+.mem-card .av{width:52px;height:52px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--olive);color:#fff;font:400 1.3rem var(--disp);background-size:cover;background-position:center}
+.mem-card:nth-child(3n+2) .av{background:var(--clay)}.mem-card:nth-child(3n) .av{background:var(--ochre);color:var(--dark)}
+.mem-card strong{display:block;font:400 1.15rem/1.2 var(--disp)}.mem-card span.loc{font:400 .88rem var(--sans);color:var(--mut)}
+.mem-card .you{position:absolute;top:.6rem;right:.8rem;font:500 .62rem var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--clay)}
+.report-latest{margin-top:1.4rem;background:var(--dark);color:var(--bg);border-radius:22px;padding:clamp(1.4rem,3vw,2.2rem);position:relative}
+.report-latest .tag{color:var(--gold)}.report-latest h3{margin:.6rem 0 .5rem;font:400 clamp(1.8rem,1rem + 1.6vw,2.8rem)/1.08 var(--cap);max-width:20ch}.report-latest p{margin:0 0 1.2rem;max-width:58ch;font:400 .98rem/1.55 var(--sans);color:rgba(241,235,221,.82)}
+.report-latest .sample{top:1.2rem;right:1.2rem;color:rgba(241,235,221,.7);border-color:rgba(241,235,221,.3)}
+.report-latest .btn{color:var(--gold)}
+.reports{border-top:1px solid var(--ink)}
+.rep{display:grid;grid-template-columns:5.5rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-bottom:1px solid var(--line);position:relative}
+.rep b{font:400 .8rem var(--sans);color:var(--clay);letter-spacing:.08em;text-transform:uppercase}.rep h4{margin:0;font:400 1.3rem/1.2 var(--disp)}.rep .sm{white-space:nowrap}
+.acad{margin-top:1.4rem;background:var(--paper);border-radius:22px;padding:clamp(1.4rem,3vw,2.4rem)}.acad h3{margin:.6rem 0;font:400 clamp(2rem,1rem + 2vw,3.4rem)/1 var(--disp)}.acad p{margin:0 0 1.2rem;max-width:56ch}
+@media (max-width:700px){.dirbar{grid-template-columns:1fr}.rep{grid-template-columns:1fr;gap:.2rem}}
+.four.six{grid-template-columns:repeat(3,1fr)}
+@media (max-width:1000px){.four.six{grid-template-columns:1fr 1fr}}
+@media (max-width:700px){.four.six{grid-template-columns:1fr}}
