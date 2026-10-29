@@ -6,13 +6,13 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGES = os.path.join(ROOT, 'src', 'pages')
 SITE = 'Radiant Collective Capital'
 
-NAV = [('Home', 'index.html'), ('About Us', 'about.html'), ('Opportunities', 'opportunities.html'),
-       ('Network', 'network.html'), ('Education', 'education.html'), ('Membership', 'membership.html'),
-       ('Member Portal', 'portal.html'), ('Apply', 'membership.html#apply'), ('Login', 'login.html')]
+NAV_LEFT = [('Home', 'index.html'), ('About Us', 'about.html'), ('Membership', 'membership.html'),
+            ('Opportunities', 'opportunities.html'), ('Academy', 'academy.html')]
+NAV_RIGHT = [('Events &amp; Recordings', 'events.html'), ('Member Portal', 'portal.html'), ('Apply', 'membership.html#apply')]
 INSTAGRAM = 'https://www.instagram.com/radiantcollectivecapital/'
 LINKEDIN = 'https://www.linkedin.com/company/radiantcollectivecapital'
 MAIL = 'mailto:admin@radiantcollective.capital'
-STRIP = ['Pan-African investments &amp; community for women leaders', 'Founding members’ rate: $500 a year', 'Real estate · fintech · hospitality · AI', 'Small checks, big opportunities']
+STRIP = ['Pan-African investments &amp; community for women leaders', 'Founding members’ rate: $500 a year', 'Real estate · fintech · hospitality · AI', 'Small checks, big impact']
 
 def intro():
     letters = ''.join('<span style="--i:%d">%s</span>' % (i, c) for i, c in enumerate('Radiant'))
@@ -28,16 +28,19 @@ def header_home():
             '<button class="dot" data-menu aria-expanded="false" aria-controls="sheet" aria-label="Open menu"><i></i></button></div>' % (mq, SITE, SITE))
 
 def header_inner():
-    return ('<header class="hd"><button class="mbox" data-menu aria-expanded="false" aria-controls="sheet" aria-label="Open menu"><span>Menu</span><span>＋</span><span>Index</span><span>01—09</span></button>'
+    return ('<header class="hd"><button class="mbox" data-menu aria-expanded="false" aria-controls="sheet" aria-label="Open menu"><span>Menu</span><span>＋</span><span>Index</span><span>01—08</span></button>'
             '<a class="mbrand" href="index.html" aria-label="%s, home"><img src="assets/img/logo-ink.png" alt="%s" width="190" height="50"></a>'
-            '<div class="hlinks"><a href="about.html">About Us</a><a class="keep" href="membership.html#apply">Apply</a><a href="login.html" data-auth="link">Login</a></div></header>' % (SITE, SITE))
+            '<div class="hlinks"><a href="about.html">About Us</a><a class="keep" href="membership.html#apply">Apply</a></div></header>' % (SITE, SITE))
 
 def menu():
-    links = ''.join('<a href="%s"%s><span style="--i:%d">%s</span></a>' % (h, ' data-auth="link"' if t == 'Login' else '', i, t) for i, (t, h) in enumerate(NAV))
+    def col(items, start):
+        return ''.join('<a href="%s"><span style="--i:%d">%s</span></a>' % (h, start + i, n) for i, (n, h) in enumerate(items))
     return ('<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">'
             '<div class="tp"><img src="assets/img/logo-cream.png" alt="%s" width="190" height="50"><button class="x" id="sheet-close">Close <i>✕</i></button></div>'
-            '<nav aria-label="Main">%s</nav>'
-            '<div><div class="bt"><a href="%s">Contact Support</a><a href="%s" rel="noopener" target="_blank">Instagram</a><a href="%s" rel="noopener" target="_blank">LinkedIn</a><a href="contact.html">Speak to our team</a></div><div class="pattern"></div></div></div>' % (SITE, links, MAIL, INSTAGRAM, LINKEDIN))
+            '<nav aria-label="Main"><div class="col">%s</div><div class="col">%s</div></nav>'
+            '<div><div class="bt"><div class="l"><a href="%s">Contact Support</a><a href="%s" rel="noopener" target="_blank">Instagram</a><a href="%s" rel="noopener" target="_blank">LinkedIn</a><a href="contact.html">Speak to our team</a></div>'
+            '<a class="login" href="login.html" data-auth="link">Login</a></div><div class="pattern"></div></div></div>'
+            % (SITE, col(NAV_LEFT, 0), col(NAV_RIGHT, len(NAV_LEFT)), MAIL, INSTAGRAM, LINKEDIN))
 
 def footer():
     return '''<footer>
@@ -47,7 +50,7 @@ def footer():
       <div><form data-form="newsletter" novalidate><label class="sr" for="nl-email">Email address</label><input id="nl-email" name="email" type="email" required placeholder="Your email here" autocomplete="email"><button type="submit">Subscribe →</button></form>
       <div class="fmsg ok" role="status">Thank you! Your submission has been received!</div><div class="fmsg err" role="alert">Oops! Something went wrong while submitting the form.</div></div></div>
     <div><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="membership.html">Membership Info</a></li><li><a href="events.html">Upcoming Events</a></li><li><a href="login.html" data-auth="link">Login</a></li><li><a href="%(mail)s">Contact Support</a></li></ul></div>
-    <div><h4>Member Portal</h4><ul><li><a href="portal.html">Member Portal</a></li><li><a href="opportunities.html">Opportunities</a></li><li><a href="network.html">Network</a></li><li><a href="education.html">Education</a></li></ul></div>
+    <div><h4>Member Portal</h4><ul><li><a href="portal.html">Member Portal</a></li><li><a href="opportunities.html">Opportunities</a></li><li><a href="academy.html">Academy</a></li></ul></div>
     <div><h4>Follow Us</h4><ul><li><a href="%(ig)s" target="_blank" rel="noopener">Instagram</a></li><li><a href="%(li)s" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
   </div>
   <div class="wm" aria-hidden="true">Radiant</div>
